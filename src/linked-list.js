@@ -11,7 +11,7 @@ class LinkedList {
 
 
 
-    head() {this.list=this.list+new Node(data=this.data prev=null next=null)}
+    head(){}// {this.list=this.list+new Node(data=this.data prev=null next=null)}
 
     tail() {}
 
