@@ -46,8 +46,13 @@ class LinkedList {                  //assign 0 to this.length
 
     reverse() {}                    //should reverse the list
 
-    indexOf(data)   {if (data==(this._head.data)) {return 0}}                //should return index of element if data is found
+    indexOf(data)   {var res=-1;
+      if (data==this._head.data) res= 0;
+      if (data==this._tail.data) res=this.length-1;
+    //  for (var i=1; i<=this.length-2; i++) if (this.i.data=data) res=i;
+    return res;}
+              //should return index of element if data is found
    // {if (data==3) return 0;if (data==7) return 1;}
-}
 
+}
 module.exports = LinkedList;
