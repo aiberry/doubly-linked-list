@@ -19,9 +19,9 @@ class LinkedList {                  //assign 0 to this.length
 
     head() { return this._head.data  }         //should return data from the this.head
 
-    tail() { return this._tail.data }            //should return data from the this.tail
+    tail() { return this._tail.data }          //should return data from the this.tail
 
-    at(index) {
+    at(index) {                                //should return Node.data by index
         if (index == 0) {
             return this._head.data
         }
@@ -31,28 +31,37 @@ class LinkedList {                  //assign 0 to this.length
 
     }
 
-                                     //should return Node.data by index
 
-    //{if (index==0)        return 1; if(index==1) return 123; if (index==2) return 444; if (index==3) return 34;}
 
-    insertAt(index, data) {}        //should insert data by index
+
+
+    insertAt(index, data) {
+
+if (index==this.length-1) {this[this.length-1]=new Node(data); this.length++;};
+if (index==0) {for (var i=this.length-1; i>1; i--) {}}
+
+    }        //should insert data by index
 
 
     isEmpty() { if (this.length==0) {return true} else {return false}}        //should return true if list is empty
 
     clear() {this.length=0; this._head.data=null; this._tail.data=null;}                      //should clear the list
 
-    deleteAt(index) {}              //should delete element by index
+    deleteAt(index) {
+      for (var i=(index); i<(this.length-1); i=i+1) {this[i-1]=this[i]};
+
+      //this[this.length-2].data=undefined; this.lenth--;
+    }              //should delete element by index
 
     reverse() {}                    //should reverse the list
 
     indexOf(data)   {var res=-1;
       if (data==this._head.data) res= 0;
       if (data==this._tail.data) res=this.length-1;
-    //  for (var i=1; i<=this.length-2; i++) if (this.i.data=data) res=i;
+      for (var i=1; i<=this.length-2; i++) if (this.i.data=data) res=i;
     return res;}
               //should return index of element if data is found
-   // {if (data==3) return 0;if (data==7) return 1;}
+
 
 }
 module.exports = LinkedList;
