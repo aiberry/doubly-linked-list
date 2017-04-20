@@ -1,67 +1,161 @@
 const Node = require('./node');
 
-class LinkedList {                  //assign 0 to this.length
+class LinkedList {
+
     constructor() {
-
-        this.length=0;
-
+        this._head = null;
+        this._tail = null;
     }
 
-    append(data) {                  //should assign any nodes to this._head and this._tail if list is empty
-                                    //should add new data to the end of list
-        if (this.length>1) {this[this.length-1]= this._tail; this._tail=new Node(data); this.length++};
+    get length() {
+        if (this._head === null && this._tail === null) {
+            return 0;
+           
+        } else {
+            var temp = this._head, count = 0;
 
-        if (this.length==1) {this._tail=new Node(data); this.length++};
-
-        if (this.length==0) {this._head=new Node(data); this._tail=this._head; this.length++};
-
-                     }
-
-    head() { return this._head.data  }         //should return data from the this.head
-
-    tail() { return this._tail.data }          //should return data from the this.tail
-
-    at(index) {                                //should return Node.data by index
-        if (index == 0) {
-            return this._head.data
+            while (temp !== null) {
+                count++;
+                temp = temp.next;
+            }
+            return count;
         }
-        else { if (index==this.length-1) {return this._tail.data}
-        else return this[index].data
-        }
-
     }
 
+    returnNode(index) {
+        var temp = this._head;
+        for (var i = 0; i < index; i++) {
+            temp = temp.next;
+        }
+        return temp;
+    }
 
+    append(data) {
+        if (this.isEmpty()) {
+            this._head = new Node(data);
+            this._tail = this._head;
 
+        } else {
+            this._tail.next = new Node(data, this._tail);
+            this._tail = this._tail.next;
+        }
+        return this;
+    }
 
+    head() {
+        if (this._head === null) {
+            return null;
+        }
+        return this._head.data;
+    }
+
+    tail() {
+        if (this._tail === null) {
+            return null;
+        }
+        return this._tail.data;
+    }
+
+    at(index) {
+        return this.returnNode(index).data;
+    }
 
     insertAt(index, data) {
+        var n = this.length;
 
-if (index==this.length-1) {this[this.length-1]=new Node(data); this.length++;};
-if (index==0) {for (var i=this.length-1; i>1; i--) {}}
+        if (index > n || index < 0) {
+            return this;
+        }
 
-    }        //should insert data by index
+        if (this.isEmpty() && index === 0) {
+            this.append(data);
+            return this;
+        }
 
+        if (this.isEmpty() && index !== 0) {
+            return this;
+        }
 
-    isEmpty() { if (this.length==0) {return true} else {return false}}        //should return true if list is empty
+        if (index === 0) {
+            this._head.prev = new Node(data, null, this._head);
+            this._head = this._head.prev;
 
-    clear() {this.length=0; this._head.data=null; this._tail.data=null;}                      //should clear the list
+        } else if (index === n) {
+            this._tail.next = new Node(data, this._tail, null);
+            this._tail = this._tail.next;
+
+        } else {
+            var temp = this.returnNode(index);
+            temp.prev = new Node(data, temp.prev, temp);
+            temp.prev.prev.next = temp.prev;
+        }
+        return this;
+    }
+
+    isEmpty() {
+        return this.length === 0;
+    }
+
+    clear() {
+        this._head = null;
+        this._tail = null;
+        return this;
+    }
 
     deleteAt(index) {
-      for (var i=(index); i<(this.length-1); i=i+1) {this[i-1]=this[i]};
+        var n = this.length;
 
-      //this[this.length-2].data=undefined; this.lenth--;
-    }              //should delete element by index
+        if (n === 1) {
+            this.clear();
+            return this;
+        }
 
-    reverse() {}                    //should reverse the list
+        if (index === 0) {
+            this._head.next.prev = null;
+            this._head = this._head.next;
+            return this;
+        }
 
-    indexOf(data)   {var res=-1;
-      if (data==this._head.data) res= 0;
-      if (data==this._tail.data) res=this.length-1;
-      for (var i=1; i<=this.length-2; i++) if (this.i.data=data) res=i;
-    return res;}
-              //should return index of element if data is found
+        if (index === n - 1) {
+            this._tail.prev.next = null;
+            this._tail = this._tail.prev;
+            return this;
+        }
 
+        var temp = this.returnNode(index); 
+        temp.prev.next = temp.next;
+        temp.next.prev = temp.prev;
+        return this;
+    }
 
+    reverse() {
+        var temp = this._tail, buf;
+
+        while (temp !== null) {
+            buf = temp.prev;
+            temp.prev = temp.next;
+            temp.next = buf;
+            temp = temp.next;
+        }
+
+        temp = this._head;
+        this._head = this._tail;
+        this._tail = temp;
+        return this;
+    }
+
+    indexOf(data) {
+        var temp = this._head, count = 0;
+
+        while (temp !== null) {
+            if (temp.data === data) {
+                return count;
+            }
+            count++;
+            temp = temp.next;
+        }
+        return -1;
+    }
 }
+
 module.exports = LinkedList;
